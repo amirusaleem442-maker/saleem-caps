@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin Dashboard | SALEEM CAPS</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#050505">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="admin">
+<header id="js-header"></header>
+
+<main class="admin-shell">
+  <!-- ============================= LOGIN ============================= -->
+  <section class="admin-login" id="js-login">
+    <div class="admin-login__card">
+      <div class="text-center" style="margin-bottom:24px">
+        <img src="images/logo-mark.svg" alt="SALEEM CAPS emblem" width="74" height="74" style="margin:0 auto 14px">
+        <h2 style="font-size:1.4rem;letter-spacing:.16em;margin-bottom:4px">ADMIN DASHBOARD</h2>
+        <p class="note" style="margin:0">Authorised staff only</p>
+      </div>
+      <form id="js-login-form" novalidate>
+        <div class="form-group">
+          <label class="lbl" for="ad-pass">Password</label>
+          <input type="password" id="ad-pass" placeholder="Enter your admin password" autocomplete="current-password" required>
+        </div>
+        <div class="alert alert--err hide" id="js-login-error"></div>
+        <button class="btn btn--gold btn--block" type="submit">Unlock Dashboard</button>
+      </form>
+      <p class="note" style="margin:18px 0 0;text-align:center">
+        First time? Use the default password <b style="color:var(--gold-2)">saleem2026</b> — change it immediately in Settings.
+      </p>
+      <p class="note" style="margin:10px 0 0;text-align:center"><a href="index.html" style="color:var(--gold-2)">← Back to store</a></p>
+    </div>
+  </section>
+
+  <!-- =========================== DASHBOARD =========================== -->
+  <section class="shell hide" id="js-dashboard" style="padding-top:24px">
+    <div class="admin-layout">
+      <aside class="admin-side">
+        <div class="admin-side__head">
+          <b>SALEEM CAPS</b>
+          <span>Store administration</span>
+        </div>
+        <nav class="admin-nav" id="js-admin-nav">
+          <button data-tab="overview" class="is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="11"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="18" width="7" height="3"/></svg> Overview</button>
+          <button data-tab="products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 8 12 3.5 20.5 8v8L12 20.5 3.5 16V8Z"/><path d="M3.5 8 12 12.5 20.5 8M12 12.5v8"/></svg> Products</button>
+          <button data-tab="add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg> Add / Upload</button>
+          <button data-tab="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z"/><path d="M9 8h6M9 12h6"/></svg> Orders <span class="admin-badge hide" id="js-nav-orders">0</span></button>
+          <button data-tab="customers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="8" r="3.4"/><path d="M2.5 20c0-3.4 2.9-5.6 6.5-5.6s6.5 2.2 6.5 5.6"/><path d="M16 5.2a3.4 3.4 0 0 1 0 6.5M18 14.6c2.2.6 3.7 2.3 3.7 4.6"/></svg> Customers</button>
+          <button data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.2 7l2.6 1.5M17.2 15.5l2.6 1.5M4.2 17l2.6-1.5M17.2 8.5l2.6-1.5"/></svg> Settings</button>
+        </nav>
+        <div style="padding:12px">
+          <a class="btn btn--ghost btn--sm btn--block" href="index.html">View Store</a>
+          <button class="btn btn--sm btn--block" id="js-logout" style="margin-top:8px;border-color:rgba(192,57,43,.5);color:#ff9d92">Log Out</button>
+        </div>
+      </aside>
+
+      <div class="admin-main">
+        <!-- OVERVIEW -->
+        <div data-panel="overview">
+          <div class="admin-head">
+            <div><h2>Overview</h2><p>Live snapshot of your store, catalogue and orders.</p></div>
+            <a class="btn btn--gold btn--sm" href="#" data-goto="add">+ Add Product</a>
+          </div>
+          <div class="kpi-grid" id="js-kpis"></div>
+          <div class="grid-2">
+            <div class="admin-card">
+              <h3>Recent Orders</h3>
+              <div id="js-recent-orders"></div>
+            </div>
+            <div class="admin-card">
+              <h3>Catalogue By Size</h3>
+              <div id="js-size-breakdown"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div data-panel="products" class="hide">
+          <div class="admin-head">
+            <div><h2>Products</h2><p>Change prices, update sizes, manage stock, upload photos, delete products. Changes appear on the storefront instantly.</p></div>
+            <div class="row-actions">
+              <button class="mini-btn mini-btn--gold" data-goto="add">+ Add Product</button>
+              <button class="mini-btn" id="js-reset-products">Restore 19 originals</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>Photo</th><th>Product</th><th>Size</th><th>Price (₦)</th><th>Stock</th><th>Flags</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="js-product-rows"></tbody>
+            </table>
+          </div>
+          <p class="note" style="margin-top:12px">Tip: press <b>Save</b> on a row after editing. “Restore 19 originals” brings back the default catalogue and the ₦18,000 price.</p>
+        </div>
+
+        <!-- ADD / UPLOAD -->
+        <div data-panel="add" class="hide">
+          <div class="admin-head"><div><h2>Add / Upload Product</h2><p>Upload a photograph, set the size, price and stock, then save.</p></div></div>
+          <div class="grid-2">
+            <div class="admin-card">
+              <h3>1 · Product Photograph</h3>
+              <div class="upload-zone" id="js-dropzone" tabindex="0" role="button" aria-label="Upload product photograph">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 16v3a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19v-3"/></svg>
+                <b>Click to upload or drag a photo here</b>
+                <span>JPG or PNG · square photos look best · resized automatically</span>
+              </div>
+              <input type="file" id="js-file" accept="image/*" class="hide">
+              <img class="preview-thumb hide" id="js-preview" alt="Product photo preview" style="margin-top:14px">
+              <p class="note" style="margin-top:12px">To replace one of the 19 original photos: upload it here, or overwrite the file in <code>images/caps/</code> keeping the same name (cap-01.svg … cap-19.svg).</p>
+            </div>
+
+            <form class="admin-card" id="js-add-form">
+              <h3>2 · Product Details</h3>
+              <div class="form-group">
+                <label class="lbl" for="add-name">Cap name *</label>
+                <input type="text" id="add-name" placeholder="e.g. Sarkin Sarauta" required>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="lbl" for="add-size">Size *</label>
+                  <select id="add-size">
+                    <option value="21.5">21½</option><option value="22">22</option>
+                    <option value="22.5">22½</option><option value="23">23</option>
+                    <option value="23.5">23½</option><option value="24">24</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="lbl" for="add-price">Price (₦) *</label>
+                  <input type="number" id="add-price" min="0" step="500" value="18000" required>
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="lbl" for="add-stock">Stock quantity</label>
+                  <input type="number" id="add-stock" min="0" step="1" value="1">
+                </div>
+                <div class="form-group">
+                  <label class="lbl" for="add-colour">Colourway</label>
+                  <input type="text" id="add-colour" placeholder="e.g. Emerald &amp; Gold">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="lbl" for="add-desc">Description</label>
+                <textarea id="add-desc" rows="3" placeholder="Describe the embroidery, cloth and occasion…"></textarea>
+              </div>
+              <div class="form-group" style="display:flex;gap:18px;flex-wrap:wrap">
+                <label style="display:flex;gap:8px;align-items:center;font-size:.82rem"><input type="checkbox" id="add-featured" style="width:auto;accent-color:var(--gold)"> Featured</label>
+                <label style="display:flex;gap:8px;align-items:center;font-size:.82rem"><input type="checkbox" id="add-new" checked style="width:auto;accent-color:var(--gold)"> New arrival</label>
+                <label style="display:flex;gap:8px;align-items:center;font-size:.82rem"><input type="checkbox" id="add-instock" checked style="width:auto;accent-color:var(--gold)"> In stock</label>
+              </div>
+              <div class="alert alert--err hide" id="js-add-error"></div>
+              <button class="btn btn--gold btn--block" type="submit">Save Product</button>
+            </form>
+          </div>
+
+          <div class="admin-card">
+            <h3>Bulk Upload</h3>
+            <p class="note">Select several photos at once. Each photo becomes a product at the default price, ready for you to rename and set its size.</p>
+            <input type="file" id="js-bulk" accept="image/*" multiple style="margin-top:10px">
+          </div>
+        </div>
+
+        <!-- ORDERS -->
+        <div data-panel="orders" class="hide">
+          <div class="admin-head"><div><h2>Orders</h2><p>Orders placed through checkout. Update status, contact the customer on WhatsApp, or delete a test order.</p></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Order</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="js-order-rows"></tbody>
+            </table>
+          </div>
+          <div class="admin-card" id="js-order-detail" style="margin-top:18px"></div>
+        </div>
+
+        <!-- CUSTOMERS -->
+        <div data-panel="customers" class="hide">
+          <div class="admin-head"><div><h2>Customers</h2><p>Customer information collected at checkout.</p></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Location</th><th>Orders</th><th>Spend</th><th>Actions</th></tr></thead>
+              <tbody id="js-customer-rows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div data-panel="settings" class="hide">
+          <div class="admin-head"><div><h2>Settings</h2><p>Store details, pricing rules, security and data.</p></div></div>
+
+          <div class="grid-2">
+            <div class="admin-card">
+              <h3>Pricing</h3>
+              <div class="form-group">
+                <label class="lbl" for="set-default-price">Default price for new products (₦)</label>
+                <input type="number" id="set-default-price" min="0" step="500">
+              </div>
+              <div class="form-group">
+                <label class="lbl" for="set-all-price">Set ALL products to this price (₦)</label>
+                <input type="number" id="set-all-price" min="0" step="500" placeholder="18000">
+              </div>
+              <button class="btn btn--gold btn--sm" id="js-apply-price">Apply price to all caps</button>
+              <p class="note" style="margin-top:12px">Current price of every cap: <b id="js-price-summary" style="color:var(--gold-2)">—</b></p>
+            </div>
+
+            <div class="admin-card">
+              <h3>Store &amp; Contact Details</h3>
+              <div class="form-group">
+                <label class="lbl" for="set-wa">WhatsApp number (international, digits only)</label>
+                <input type="text" id="set-wa" placeholder="2348138096960">
+              </div>
+              <div class="form-group">
+                <label class="lbl" for="set-phone">Phone (display)</label>
+                <input type="text" id="set-phone" placeholder="08138096960">
+              </div>
+              <div class="form-group">
+                <label class="lbl" for="set-email">Email</label>
+                <input type="email" id="set-email" placeholder="amirusaleem442@gmail.com">
+              </div>
+              <div class="form-group">
+                <label class="lbl" for="set-address">Address</label>
+                <input type="text" id="set-address">
+              </div>
+              <div class="form-group">
+                <label class="lbl" for="set-delivery">Delivery fee (₦, 0 = free)</label>
+                <input type="number" id="set-delivery" min="0" step="100">
+              </div>
+              <button class="btn btn--gold btn--sm" id="js-save-settings">Save Settings</button>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="admin-card">
+              <h3>Security</h3>
+              <div class="form-group">
+                <label class="lbl" for="set-current">Current password</label>
+                <input type="password" id="set-current" autocomplete="current-password">
+              </div>
+              <div class="form-group">
+                <label class="lbl" for="set-new">New password (min 6 characters)</label>
+                <input type="password" id="set-new" autocomplete="new-password">
+              </div>
+              <button class="btn btn--gold btn--sm" id="js-change-pass">Change Password</button>
+              <p class="note" style="margin-top:12px">This dashboard runs in the browser; the password protects against casual access. For a multi-admin store with server-side security, host the site with a backend login.</p>
+            </div>
+
+            <div class="admin-card">
+              <h3>Data</h3>
+              <p class="note">Products, orders and settings are stored in this browser. Export a backup regularly.</p>
+              <div class="row-actions" style="margin-top:6px">
+                <button class="mini-btn" id="js-export">Export backup (JSON)</button>
+                <button class="mini-btn" id="js-import-btn">Import backup</button>
+                <input type="file" id="js-import" accept="application/json" class="hide">
+                <button class="mini-btn mini-btn--danger" id="js-clear-orders">Delete all orders</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
